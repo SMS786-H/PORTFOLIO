@@ -1,41 +1,30 @@
 <?php
-/**
- * Requires the "PHP Email Form" library
- * The "PHP Email Form" library is available only in the pro version of the template
- * The library should be uploaded to: vendor/php-email-form/php-email-form.php
- * For more info and help: https://bootstrapmade.com/php-email-form/
- */
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Collect and sanitize input data
+    $name = htmlspecialchars(trim($_POST['name']));
+    $email = htmlspecialchars(trim($_POST['email']));
+    $message = htmlspecialchars(trim($_POST['message']));
 
-// Replace contact@example.com with your real receiving email address
-$receiving_email_address = 'maddusagarisubahan@gmail.com';
+    // Validate email
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo "Invalid email format";
+        exit;
+    }
 
-if (file_exists($php_email_form = '../assets/vendor/php-email-form/php-email-form.php')) {
-    include($php_email_form);
+    // Here you can add code to send the email or save the data
+    // For example, using the mail() function to send an email
+    $to = "maddusagarisubahan@gmail.com"; // Replace with your email address
+    $subject = "New Contact Form Submission";
+    $body = "Name: $name\nEmail: $email\nMessage: $message";
+    $headers = "From: $email";
+
+    if (mail($to, $subject, $body, $headers)) {
+        echo "Message sent successfully!";
+    } else {
+        echo "Message could not be sent.";
+    }
 } else {
-    die('Unable to load the "PHP Email Form" Library!');
+    // If the request method is not POST, show an error
+    echo "Method not allowed.";
 }
-
-$contact = new PHP_Email_Form;
-$contact->ajax = true;
-
-$contact->to = $receiving_email_address;
-$contact->from_name = isset($_POST['name']) ? $_POST['name'] : '';
-$contact->from_email = isset($_POST['email']) ? $_POST['email'] : '';
-$contact->subject = isset($_POST['subject']) ? $_POST['subject'] : 'No Subject';
-
-// Uncomment below code if you want to use SMTP to send emails. You need to enter your correct SMTP credentials
-/*
-$contact->smtp = array(
-    'host' => 'smtp.example.com', // Replace with your SMTP host
-    'username' => 'your_smtp_username', // Replace with your SMTP username
-    'password' => 'your_smtp_password', // Replace with your SMTP password
-    'port' => '587' // Common SMTP port
-);
-*/
-
-$contact->add_message($contact->from_name, 'From');
-$contact->add_message($contact->from_email, 'Email');
-$contact->add_message(isset($_POST['message']) ? $_POST['message'] : '', 'Message', 10);
-
-echo $contact->send();
 ?>
