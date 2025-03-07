@@ -11,13 +11,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    // Here you can add code to send the email or save the data
-    // For example, using the mail() function to send an email
-    $to = "maddusagarisubahan@gmail.com"; // Replace with your email address
+    // Set your email address here
+    $to = "maddusagarisubahan@gmail.com"; // Replace with your actual email address
     $subject = "New Contact Form Submission";
     $body = "Name: $name\nEmail: $email\nMessage: $message";
     $headers = "From: $email";
 
+    // Send the email
     if (mail($to, $subject, $body, $headers)) {
         echo "Message sent successfully!";
     } else {

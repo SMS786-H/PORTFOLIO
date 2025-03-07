@@ -1,3 +1,6 @@
 {
-    "liveServer.settings.port": 5501
+    "php.validate.executablePath": "D:\\XAMPP\\php\\php.exe",
+    "php.executables": {
+        "php": "D:\\XAMPP\\php\\php.exe"
+    }
 }
